@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnpAssignments", "DnpAssignments.csproj", "{79600B57-B773-48FB-9AD1-A0FC4F957B54}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79600B57-B773-48FB-9AD1-A0FC4F957B54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79600B57-B773-48FB-9AD1-A0FC4F957B54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79600B57-B773-48FB-9AD1-A0FC4F957B54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79600B57-B773-48FB-9AD1-A0FC4F957B54}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
