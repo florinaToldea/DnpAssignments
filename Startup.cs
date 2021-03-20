@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DnpAssignments.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DnpAssignments.Data;
+using DnpAssignments.Data.Impl;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace DnpAssignments
 {
@@ -28,7 +31,16 @@ namespace DnpAssignments
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<IFamily, FamilyService>();
+            services.AddSingleton<IAdult, AdultService>();
+            services.AddScoped<IUser, UserService>();
+            services.AddScoped<AuthenticationStateProvider, UserAuthentication>();
+            
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("MustBeADMIN", a 
+                    => a.RequireAuthenticatedUser().RequireClaim("Role", "ADMIN"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

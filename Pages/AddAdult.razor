@@ -1,0 +1,80 @@
+﻿@page "/AddAdult"
+@attribute [Authorize]
+@using DnpAssignments.Data
+@using DnpAssignments.Models
+@using System.Text.Json
+@inject IAdult AdultService
+@inject NavigationManager NavigationManager
+
+<h3>AddAdult</h3>
+
+
+<EditForm Model="@newAdult" OnValidSubmit="@AddAnAdult">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <p class="actions">
+        <button class="btn btn-outline-dark" type="submit">Create</button>
+    </p>
+    <div class="form-group">
+        Job Title <br/>
+        <InputTextArea @bind-Value="newAdult.JobTitle.JobTitle"></InputTextArea>
+    </div>
+    <div class="form-group">
+        Salary <br/>
+        <InputNumber @bind-Value="newAdult.JobTitle.Salary"></InputNumber>
+    </div>
+    <div class="form-group">
+        Sex<br/>
+        <InputTextArea @bind-Value="newAdult.Sex"></InputTextArea>
+    </div>
+    <div class="form-group">
+        Eye color<br/>
+        <InputTextArea @bind-Value="newAdult.EyeColor"></InputTextArea>
+    </div>
+    <div class="form-group">
+        First Name<br/>
+        <InputTextArea @bind-Value="newAdult.FirstName"></InputTextArea>
+    </div>
+    <div class="form-group">
+        Last Name<br/>
+        <InputTextArea @bind-Value="newAdult.LastName"></InputTextArea>
+    </div>
+    <div class="form-group">
+        Hair color<br/>
+        <InputTextArea @bind-Value="newAdult.HairColor"></InputTextArea>
+    </div>
+    <div class="form-group">
+        Age <br/>
+        <InputNumber @bind-Value="newAdult.Age"></InputNumber>
+    </div>
+    <div class="form-group">
+        Height <br/>
+        <InputNumber @bind-Value="newAdult.Height"></InputNumber>
+    </div>
+    <div class="form-group">
+        Weight <br/>
+        <InputNumber @bind-Value="newAdult.Weight"></InputNumber>
+    </div>
+
+
+</EditForm>
+
+@code {
+
+    private Adult newAdult;
+
+    protected override void OnInitialized()
+    {
+        newAdult = new Adult();
+        newAdult.JobTitle = new Job();
+    }
+
+    public void AddAnAdult()
+    {
+        Console.WriteLine("Adding adult " + JsonSerializer.Serialize(newAdult));
+        Adult adult = new Adult();
+        AdultService.AddAdult(newAdult);
+        NavigationManager.NavigateTo("/");
+    }
+
+}
