@@ -31,7 +31,6 @@ namespace DnpAssignments
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<IFamily, FamilyService>();
             services.AddSingleton<IAdult, AdultService>();
             services.AddScoped<IUser, UserService>();
             services.AddScoped<AuthenticationStateProvider, UserAuthentication>();
