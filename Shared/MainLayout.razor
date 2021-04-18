@@ -1,7 +1,10 @@
 ﻿@using LoginComponent
+@using System.Security.Claims
 @inherits LayoutComponentBase
 
 
+
+@inject NavigationManager NavigationManager
 
 <div class="page">
     <div class="sidebar">
@@ -10,7 +13,7 @@
 
     <div class="main">
         <div class="top-row px-4">
-            <Login/>
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
 
         <div class="content px-4">
@@ -18,3 +21,22 @@
         </div>
     </div>
 </div>
+
+
+@code
+{
+ [CascadingParameter]
+ protected Task<AuthenticationState> AuthStat { get; set; }
+   
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        Console.WriteLine("1********");
+        ClaimsPrincipal user = (await AuthStat).User;
+        Console.WriteLine("2********");
+        if (!user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo($"/Login");
+        } 
+    }
+}

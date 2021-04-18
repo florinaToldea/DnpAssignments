@@ -1,10 +1,11 @@
-﻿using DnpAssignments.Models;
+﻿using System.Threading.Tasks;
+using DnpAssignments.Models;
 
 namespace DnpAssignments.Data
 {
     public interface IUser
     {
-        User ValidateUser(string username, string password);
+        Task<User> ValidateLoginAsync(string username, string password);
        
     }
 }

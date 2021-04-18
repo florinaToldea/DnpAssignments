@@ -6,75 +6,74 @@
 @inject IAdult AdultService
 @inject NavigationManager NavigationManager
 
-<h3>AddAdult</h3>
-
-
-<EditForm Model="@newAdult" OnValidSubmit="@AddAnAdult">
-    <DataAnnotationsValidator/>
+<h3>Add New Adult</h3>
+<EditForm Model="@adultToAdd" OnValidSubmit="@AddNewAdultAsync">
     <ValidationSummary/>
-    <p class="actions">
-        <button class="btn btn-outline-dark" type="submit">Create</button>
-    </p>
-    <div class="form-group">
-        Job Title <br/>
-        <InputTextArea @bind-Value="newAdult.JobTitle.JobTitle"></InputTextArea>
+    <DataAnnotationsValidator/>
+    <div class="col-sm-4">
+        Adult Id:<br/>
+        <InputNumber @bind-Value="adultToAdd.Id"/>
     </div>
-    <div class="form-group">
-        Salary <br/>
-        <InputNumber @bind-Value="newAdult.JobTitle.Salary"></InputNumber>
+    <br/>
+    <div class="col-sm-7">
+        <InputText id="FirstName" class="form-control" placeholder="FirstName"
+                   @bind-Value="adultToAdd.FirstName"/>
     </div>
-    <div class="form-group">
-        Sex<br/>
-        <InputTextArea @bind-Value="newAdult.Sex"></InputTextArea>
+    <br/>
+    <div class="col-sm-7">
+        <InputText id="LastName" class="form-control" placeholder="LastName"
+                   @bind-Value="adultToAdd.LastName"/>
     </div>
-    <div class="form-group">
-        Eye color<br/>
-        <InputTextArea @bind-Value="newAdult.EyeColor"></InputTextArea>
+    <br/>
+    <div class="col-sm-7">
+        <InputText id="HairColor" class="form-control" placeholder="HairColor"
+                   @bind-Value="adultToAdd.HairColor"/>
     </div>
-    <div class="form-group">
-        First Name<br/>
-        <InputTextArea @bind-Value="newAdult.FirstName"></InputTextArea>
+    <br/>
+    <div class="col-sm-4">
+        Age:<br/>
+        <InputNumber @bind-Value="adultToAdd.Age"/>
     </div>
-    <div class="form-group">
-        Last Name<br/>
-        <InputTextArea @bind-Value="newAdult.LastName"></InputTextArea>
+    <br/>
+    <div class="col-sm-4">
+        Height:<br/>
+        <InputNumber @bind-Value="adultToAdd.Height"/> 
     </div>
-    <div class="form-group">
-        Hair color<br/>
-        <InputTextArea @bind-Value="newAdult.HairColor"></InputTextArea>
+    <br/>
+    <div class="col-sm-4">
+        Weight:<br/>
+        <InputNumber @bind-Value="adultToAdd.Weight"/> 
     </div>
-    <div class="form-group">
-        Age <br/>
-        <InputNumber @bind-Value="newAdult.Age"></InputNumber>
+    <br/>
+    <div class="col-sm-7">
+        <InputText id="Sex" class="form-control" placeholder="Sex"
+                   @bind-Value="adultToAdd.Sex"/>
     </div>
-    <div class="form-group">
-        Height <br/>
-        <InputNumber @bind-Value="newAdult.Height"></InputNumber>
+    <br/>
+    <div class="col-sm-7">
+        <InputText id ="JobTitle" class="form-control" placeholder="JobTitle"
+                   @bind-Value="newJobToAdd.JobTitle"/>
     </div>
-    <div class="form-group">
-        Weight <br/>
-        <InputNumber @bind-Value="newAdult.Weight"></InputNumber>
+    <br/>
+    <div class="col-sm-7">
+        Salary:<br/>
+        <InputNumber @bind-Value="newJobToAdd.Salary"/>
     </div>
-
-
+    <br/>
+    <p class="action">
+           <button class="btn btn-outline-dark" type="submit">Create</button>
+       </p>
 </EditForm>
 
 @code {
+    private Adult adultToAdd = new Adult();
+    private Job newJobToAdd = new Job();
 
-    private Adult newAdult;
-
-    protected override void OnInitialized()
+    private async Task AddNewAdultAsync()
     {
-        newAdult = new Adult();
-        newAdult.JobTitle = new Job();
-    }
-
-    public void AddAnAdult()
-    {
-        Console.WriteLine("Adding adult " + JsonSerializer.Serialize(newAdult));
-        Adult adult = new Adult();
-        AdultService.AddAdult(newAdult);
-        NavigationManager.NavigateTo("/");
+        adultToAdd.JobTitle = newJobToAdd;
+        await AdultService.AddAdultAsync(adultToAdd);
+        NavigationManager.NavigateTo("Adults");
     }
 
 }

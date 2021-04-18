@@ -3,58 +3,64 @@
 @using DnpAssignments.Models
 @inject IAdult AdultService;
 
-<h3>Adult</h3>
+<h3>Adults</h3>
+<p>Search by First Name:<input type="text" @oninput="@((arg) => Filter(arg))" 
+                               style="width: 200px"/>
+</p>
 
-@if (adults == null)
+@if (adultsToShow == null)
 {
     <p>
         <em>Loading...</em>
     </p>
 }
-else if (!adults.Any())
+else if (!adultsToShow.Any())
 {
     <p>
-        <em> No Adult items exist. Please add some.</em>
+        <em>No Adults registred!</em>
     </p>
 }
 else
 {
-    <table class="table">
+    <table class="table table-striped">
         <thead>
-        <tr>
-            <th>Id</th>
-            <th>JobTitle</th>
-            <th>Salary</th>
-            <th>FirstName</th>
-            <th>LastName</th>
-            <th>HairColor</th>
-            <th>EyeColor</th>
-            <th>Age</th>
-            <th>Weight</th>
-            <th>Height</th>
-            <th>Sex</th>
-            <AuthorizeView Policy="MustBeADMIN"><th>Remove</th></AuthorizeView>
-        </tr>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Hair Color</th>
+                <th scope="col">Age</th>
+                <th scope="col">Weight</th>
+                <th scope="col">Height</th>
+                <th scope="col">Sex</th>
+                <th scope="col">Job Title</th>
+                <th scope="col">Salary</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var item in adults)
+        @foreach (var adult in adultsToShow)
         {
             <tr>
-                <td>@item.Id</td>
-                <td>@item.JobTitle.JobTitle</td>
-                <td>@item.JobTitle.Salary</td>
-                <td>@item.FirstName</td>
-                <td>@item.LastName</td>
-                <td>@item.HairColor</td>
-                <td>@item.EyeColor</td>
-                <td>@item.Age</td>
-                <td>@item.Weight</td>
-                <td>@item.Height</td>
-                <td>@item.Sex</td>
-                <AuthorizeView Policy="MustBeADMIN">
+                <td>@adult.Id</td>
+                <td>@adult.FirstName</td>
+                <td>@adult.LastName</td>
+                <td>@adult.HairColor</td>
+                <td>@adult.Age</td>
+                <td>@adult.Weight</td>
+                <td>@adult.Height</td>
+                <td>@adult.Sex</td>
+                <td>@adult.JobTitle.JobTitle</td>
+                <td>@adult.JobTitle.Salary</td>
+                
+                <AuthorizeView Policy="MustBeManager">
                     <td>
-                        <button @onclick="@(() => removeTodoById(@item.Id))">
-                            <i class="oi oi-trash" style="color:red"/>
+                        <button @onclick="@(() => RemoveAdultAsync(adult.Id))">
+                            <i class="oi oi-trash" style="color: red"/>
+                        </button>
+                    </td>
+                    <td>
+                        <button @onclick="() => EditAdultAsync(adult.Id)">
+                            <i class="oi oi-pencil" style="color: #2efff8"></i>
                         </button>
                     </td>
                 </AuthorizeView>
@@ -66,16 +72,41 @@ else
 }
 
 @code {
+    private IList<Adult> adultsToShow;
     private IList<Adult> adults;
+    private string filterByName;
 
     protected override async Task OnInitializedAsync()
     {
-        adults = AdultService.GetAllAdults();
+        adults = await AdultService.GetAllAdultsAsync();
+        adultsToShow = adults;
     }
 
-    public void removeTodoById(int id)
+    private void Filter(ChangeEventArgs changeEventArgs)
     {
-        AdultService.RemoveAdult(id);
+        filterByName = null;
+        try
+        {
+            filterByName = changeEventArgs.Value.ToString();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        ExecuteFilter();
     }
 
+    private void ExecuteFilter()
+    {
+        adultsToShow = adults.Where(a => a.FirstName.Equals(filterByName)).ToList();
+    }
+
+    private async Task RemoveAdultAsync(int adultId)
+    {
+        Adult adultToRemove = adults.First(a => a.Id == adultId);
+        await AdultService.RemoveAdultAsync(adultId);
+        adultsToShow.Remove(adultToRemove);
+        adults.Remove(adultToRemove);
+    }
 }

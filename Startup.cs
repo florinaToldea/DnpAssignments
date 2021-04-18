@@ -11,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DnpAssignments.Data;
-using DnpAssignments.Data.Impl;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace DnpAssignments
@@ -31,8 +30,8 @@ namespace DnpAssignments
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<IAdult, AdultService>();
-            services.AddScoped<IUser, UserService>();
+            //services.AddSingleton<IAdult, AdultService>();
+            //services.AddScoped<IUser, UserService>();
             services.AddScoped<AuthenticationStateProvider, UserAuthentication>();
             
             services.AddAuthorization(options =>
